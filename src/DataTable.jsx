@@ -11,14 +11,9 @@ const DataTable = () => {
   const [page, setPage] = useState(1);
   const [loader, setLoader] = useState(false);
 
-
   const getData = (page) => {
-    const url = `https://api.github.com/repos/neovim/neovim/pulls?state=all&per_page=7&page=${page}`;
-    fetch(url, {
-      headers: {
-        Authorization: "token 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",
-      },
-    })
+    const url = `https://api.github.com/repos/neovim/neovim/pulls?state=all&per_page=15&page=${page}`;
+    fetch(url)
       .then((res) => res.json())
       .then((res) => {
         if (page > 1) {
@@ -26,14 +21,14 @@ const DataTable = () => {
           setTimeout(() => {
             setData(result);
             setLoader(false);
-          }, 2000);
+          }, 1000);
         } else {
           setData(res);
         }
       });
   };
   useEffect(() => {
-    getData();
+    getData(page);
   }, []);
 
   const handleScroll = (e) => {
@@ -41,12 +36,14 @@ const DataTable = () => {
       e.target.scrollHeight - e.target.clientHeight - e.target.scrollTop < 50;
     if (bottom) {
       let pages = page + 1;
-      if (pages == 9) {
+      if (pages == 5) {
         return;
       }
       setLoader(true);
-      getData(pages);
-      setPage(pages);
+      setTimeout(() => {
+        getData(pages);
+        setPage(pages);
+      }, 1000);
     }
   };
 
@@ -54,10 +51,10 @@ const DataTable = () => {
     <>
       <div
         onScroll={handleScroll}
-        style={{ overflowY: "auto", height: "500px", marginTop:"100px" }}
+        style={{ overflowY: "auto", height: "500px", marginTop: "100px" }}
       >
         <Table stickyHeader aria-label="sticky table">
-          <TableHead >
+          <TableHead>
             <TableRow>
               <TableCell>Title</TableCell>
               <TableCell>Base Branch</TableCell>
@@ -108,7 +105,6 @@ const DataTable = () => {
               <CircularProgress />
             </div>
           )}
-          
         </Table>
       </div>
     </>
