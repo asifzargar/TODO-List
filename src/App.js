@@ -1,10 +1,10 @@
 import "./App.css";
-import ToDo from "./ToDo";
+import DataTable from "./DataTable";
 
 function App() {
   return (
     <div>
-      <ToDo />
+      <DataTable />
     </div>
   );
 }
